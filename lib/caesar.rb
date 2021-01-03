@@ -1,4 +1,5 @@
 class Caesar
+  # Encode a string with a given rotation. Only letters are shifted, other characters are preserved. 
   def encode(str, rot)
     codes = get_charcodes(str)
     get_string(codes
