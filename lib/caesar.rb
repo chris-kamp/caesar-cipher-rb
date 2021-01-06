@@ -1,25 +1,30 @@
 class Caesar
-  # Encode a string with a given rotation. Only letters are shifted, other characters are preserved. 
+  # Encode a string with a given rotation. Only letters are shifted, other characters are preserved.
   def encode(str, rot)
     codes = get_charcodes(str)
-    get_string(codes
-      .map {|code| {code: code, offset: get_offset(code)}}
-      .each {|pair| pair[:code] = apply_offset(pair[:code], pair[:offset])}
-      .each {|pair| pair[:code] = apply_rot(pair[:code], rot) if pair[:offset] != 0}
-      .each {|pair| pair[:code] = remove_offset(pair[:code], pair[:offset])}
-      .map {|pair| pair[:code]})
+    get_string(
+      codes.map do |code|
+        { code: code, offset: get_offset(code) }
+      end.each do |pair|
+        pair[:code] = apply_offset(pair[:code], pair[:offset])
+      end.each do |pair|
+        pair[:code] = apply_rot(pair[:code], rot) if pair[:offset] != 0
+      end.each do |pair|
+        pair[:code] = remove_offset(pair[:code], pair[:offset])
+      end.map { |pair| pair[:code] },
+    )
   end
 
   # Get array of char codes from a string
   def get_charcodes(str)
-    str.split("").map {|char| char.ord}
+    str.split('').map { |char| char.ord }
   end
 
   # Get the offset required to bring a letter's char code into the range 0-26
   def get_offset(charcode)
-    if charcode >= 97 && charcode <= 122
+    if charcode.between?(97, 122)
       return 97
-    elsif charcode >= 65 && charcode <= 90
+    elsif charcode.between?(65, 90)
       return 65
     else
       return 0
@@ -43,6 +48,6 @@ class Caesar
 
   # Get a string from an array of char codes
   def get_string(charcodes)
-    charcodes.map {|code| code.chr}.join("")
+    charcodes.map { |code| code.chr }.join('')
   end
 end
